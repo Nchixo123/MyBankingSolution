@@ -1,0 +1,24 @@
+@* Toast Notification Partial View *@
+@* This partial renders hidden inputs that trigger toast notifications from TempData *@
+
+@if (TempData["ToastSuccess"] != null)
+{
+    <input type="hidden" id="toast-success-message" value="@TempData["ToastSuccess"]" />
+}
+
+@if (TempData["ToastError"] != null)
+{
+    <input type="hidden" id="toast-error-message" value="@TempData["ToastError"]" />
+}
+
+@if (TempData["ToastWarning"] != null)
+{
+    <input type="hidden" id="toast-warning-message" value="@TempData["ToastWarning"]" />
+}
+
+@if (TempData["ToastInfo"] != null)
+{
+    <input type="hidden" id="toast-info-message" value="@TempData["ToastInfo"]" />
+}
+
+@* Toast container will be created dynamically by JavaScript *@

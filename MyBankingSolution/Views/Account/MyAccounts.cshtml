@@ -1,0 +1,89 @@
+@model IEnumerable<BankingSystem.Application.Dtos.AccountDto>
+
+@{
+    ViewData["Title"] = "My Accounts";
+}
+
+<div class="container mt-4">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2><i class="bi bi-wallet2"></i> My Accounts</h2>
+        <a asp-controller="BankAccount" asp-action="Create" class="btn btn-primary">
+            <i class="bi bi-plus-circle"></i> Open New Account
+        </a>
+    </div>
+
+    @if (TempData["SuccessMessage"] != null)
+    {
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+            @TempData["SuccessMessage"]
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    }
+
+    @if (Model != null && Model.Any())
+    {
+        <div class="row g-4">
+            @foreach (var account in Model)
+            {
+                <div class="col-md-6 col-lg-4">
+                    <div class="card h-100 shadow-sm">
+                        <div class="card-header bg-primary text-white">
+                            <h5 class="mb-0">
+                                <i class="bi bi-credit-card"></i> @account.AccountType.ToString()
+                            </h5>
+                        </div>
+                        <div class="card-body">
+                            <div class="mb-3">
+                                <small class="text-muted">Account Number</small>
+                                <h6 class="mb-0">@account.AccountNumber</h6>
+                            </div>
+                            <div class="mb-3">
+                                <small class="text-muted">Balance</small>
+                                <h4 class="text-success mb-0">@account.Balance.ToString("C")</h4>
+                            </div>
+                            <div class="mb-3">
+                                <small class="text-muted">Status</small>
+                                <div>
+                                    @if (account.Status == BankingSystem.Domain.Entities.Enums.AccountStatus.Active)
+                                    {
+                                        <span class="badge bg-success">Active</span>
+                                    }
+                                    else if (account.Status == BankingSystem.Domain.Entities.Enums.AccountStatus.Inactive)
+                                    {
+                                        <span class="badge bg-secondary">Inactive</span>
+                                    }
+                                    else if (account.Status == BankingSystem.Domain.Entities.Enums.AccountStatus.Frozen)
+                                    {
+                                        <span class="badge bg-warning text-dark">Frozen</span>
+                                    }
+                                    else if (account.Status == BankingSystem.Domain.Entities.Enums.AccountStatus.Closed)
+                                    {
+                                        <span class="badge bg-danger">Closed</span>
+                                    }
+                                </div>
+                            </div>
+                            <div class="mb-3">
+                                <small class="text-muted">Opened On</small>
+                                <p class="mb-0">@account.CreatedAt.ToString("MMMM dd, yyyy")</p>
+                            </div>
+                        </div>
+                        <div class="card-footer bg-transparent">
+                            <div class="d-grid gap-2">
+                                <a asp-controller="BankAccount" asp-action="Details" asp-route-id="@account.Id" class="btn btn-outline-primary btn-sm">
+                                    <i class="bi bi-eye"></i> View Details
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    }
+    else
+    {
+        <div class="alert alert-info" role="alert">
+            <h4 class="alert-heading"><i class="bi bi-info-circle"></i> No Accounts Found</h4>
+            <p>You don't have any bank accounts yet. Click the button above to open your first account!</p>
+        </div>
+    }
+</div>

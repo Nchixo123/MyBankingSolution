@@ -1,0 +1,71 @@
+@model IEnumerable<BankingSystem.Application.Dtos.AccountDto>
+@{
+    ViewData["Title"] = "My Accounts";
+}
+
+<div class="container mt-5">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2 class="mb-0"><i class="bi bi-wallet2"></i> My Accounts</h2>
+        <a asp-action="Create" class="btn btn-primary"><i class="bi bi-plus-circle"></i> Open New Account</a>
+    </div>
+
+    @if (TempData["SuccessMessage"] != null)
+    {
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+            @TempData["SuccessMessage"]
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    }
+    @if (TempData["ErrorMessage"] != null)
+    {
+        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+            @TempData["ErrorMessage"]
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    }
+
+    @if (Model == null || !Model.Any())
+    {
+        <div class="alert alert-info"><i class="bi bi-info-circle"></i> You have no accounts yet. Create one to get started.</div>
+    }
+    else
+    {
+        <div class="table-responsive">
+            <table class="table table-striped align-middle">
+                <thead class="table-light">
+                    <tr>
+                        <th>Account #</th>
+                        <th>Type</th>
+                        <th class="text-end">Balance</th>
+                        <th>Status</th>
+                        <th>Opened</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                @foreach (var acct in Model)
+                {
+                    <tr>
+                        <td class="fw-semibold">@acct.AccountNumber</td>
+                        <td>@acct.AccountType</td>
+                        <td class="text-end">@acct.Balance.ToString("C")</td>
+                        <td>
+                            <span class="badge @(acct.Status == BankingSystem.Domain.Entities.Enums.AccountStatus.Active ? "bg-success" : "bg-secondary")">@acct.Status</span>
+                        </td>
+                        <td>@acct.CreatedAt.ToLocalTime().ToString("yyyy-MM-dd")</td>
+                        <td class="text-end">
+                            <a asp-action="Details" asp-route-accountNumber="@acct.AccountNumber" class="btn btn-sm btn-outline-primary">
+                                <i class="bi bi-eye"></i> View
+                            </a>
+                        </td>
+                    </tr>
+                }
+                </tbody>
+            </table>
+        </div>
+    }
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

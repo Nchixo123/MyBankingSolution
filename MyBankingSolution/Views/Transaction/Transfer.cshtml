@@ -1,0 +1,88 @@
+@model BankingSystem.Application.Dtos.TransferDto
+
+@{
+    ViewData["Title"] = "Transfer Funds";
+}
+
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-10 col-lg-8">
+            <div class="card shadow">
+                <div class="card-body p-5">
+                    <div class="text-center mb-4">
+                        <i class="bi bi-arrow-left-right fs-1 text-primary"></i>
+                        <h2 class="mt-3">Transfer Funds</h2>
+                        <p class="text-muted">Transfer money between accounts</p>
+                    </div>
+
+                    @if (TempData["ErrorMessage"] != null)
+                    {
+                        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                            @TempData["ErrorMessage"]
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                        </div>
+                    }
+
+                    <form asp-action="Transfer" method="post">
+                        <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
+                        
+                        <div class="row mb-4">
+                            <div class="col-md-6">
+                                <label asp-for="FromAccountNumber" class="form-label fw-bold">From Account</label>
+                                <select asp-for="FromAccountNumber" asp-items="ViewBag.Accounts" class="form-select form-select-lg">
+                                    <option value="">-- Select Account --</option>
+                                </select>
+                                <span asp-validation-for="FromAccountNumber" class="text-danger small"></span>
+                            </div>
+
+                            <div class="col-md-6">
+                                <label asp-for="ToAccountNumber" class="form-label fw-bold">To Account</label>
+                                <select asp-for="ToAccountNumber" asp-items="ViewBag.Accounts" class="form-select form-select-lg">
+                                    <option value="">-- Select Account --</option>
+                                </select>
+                                <span asp-validation-for="ToAccountNumber" class="text-danger small"></span>
+                            </div>
+                        </div>
+
+                        <div class="mb-4">
+                            <label asp-for="Amount" class="form-label fw-bold">Transfer Amount</label>
+                            <div class="input-group input-group-lg">
+                                <span class="input-group-text">$</span>
+                                <input asp-for="Amount" type="number" step="0.01" min="0.01" class="form-control" placeholder="0.00" autofocus />
+                            </div>
+                            <span asp-validation-for="Amount" class="text-danger small"></span>
+                        </div>
+
+                        <div class="mb-4">
+                            <label asp-for="Description" class="form-label">Description (Optional)</label>
+                            <textarea asp-for="Description" class="form-control" rows="3" placeholder="Add a note about this transfer"></textarea>
+                            <span asp-validation-for="Description" class="text-danger small"></span>
+                        </div>
+
+                        <div class="alert alert-info" role="alert">
+                            <h6 class="alert-heading"><i class="bi bi-info-circle"></i> Transfer Information</h6>
+                            <ul class="mb-0 small">
+                                <li>Transfers are processed instantly</li>
+                                <li>Ensure you have sufficient funds in the source account</li>
+                                <li>Both accounts must be active to complete the transfer</li>
+                            </ul>
+                        </div>
+
+                        <div class="d-grid gap-2">
+                            <button type="submit" class="btn btn-primary btn-lg">
+                                <i class="bi bi-check-circle"></i> Complete Transfer
+                            </button>
+                            <a asp-controller="Dashboard" asp-action="Index" class="btn btn-outline-secondary">
+                                <i class="bi bi-x-circle"></i> Cancel
+                            </a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

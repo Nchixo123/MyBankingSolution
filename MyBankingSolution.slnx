@@ -1,0 +1,7 @@
+<Solution>
+  <Project Path="BankingSystem.Application/BankingSystem.Application.csproj" />
+  <Project Path="BankingSystem.Domain/BankingSystem.Domain.csproj" />
+  <Project Path="BankingSystem.Infrastructure/BankingSystem.Infrastructure.csproj" />
+  <Project Path="MyBankingSolution/MyBankingSolution.csproj" />
+  <Project Path="Tests/Tests.csproj" />
+</Solution>

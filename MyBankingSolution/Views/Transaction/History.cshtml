@@ -1,0 +1,158 @@
+@model IEnumerable<BankingSystem.Application.Dtos.TransactionDto>
+
+@{
+    ViewData["Title"] = "Transaction History";
+    var accountNumber = ViewBag.AccountNumber as string;
+}
+
+<div class="container mt-4">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2><i class="bi bi-clock-history"></i> Transaction History</h2>
+        <a asp-controller="Dashboard" asp-action="Index" class="btn btn-outline-secondary">
+            <i class="bi bi-arrow-left"></i> Back to Dashboard
+        </a>
+    </div>
+
+    @if (!string.IsNullOrEmpty(accountNumber))
+    {
+        <div class="alert alert-info mb-4">
+            <i class="bi bi-info-circle"></i> Showing transactions for account: <strong>@accountNumber</strong>
+        </div>
+    }
+
+    @if (Model != null && Model.Any())
+    {
+        <div class="card shadow-sm">
+            <div class="card-body p-0">
+                <div class="table-responsive">
+                    <table class="table table-hover mb-0">
+                        <thead class="table-light">
+                            <tr>
+                                <th>Date & Time</th>
+                                <th>Reference</th>
+                                <th>Type</th>
+                                <th>Account</th>
+                                <th>Description</th>
+                                <th class="text-end">Amount</th>
+                                <th class="text-end">Balance After</th>
+                                <th>Status</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var transaction in Model)
+                            {
+                                <tr>
+                                    <td>
+                                        <small class="text-muted">
+                                            @transaction.CreatedAt.ToString("MMM dd, yyyy")<br />
+                                            @transaction.CreatedAt.ToString("hh:mm tt")
+                                        </small>
+                                    </td>
+                                    <td>
+                                        <small class="font-monospace">@transaction.TransactionReference</small>
+                                    </td>
+                                    <td>
+                                        @if (transaction.Type == BankingSystem.Domain.Entities.Enums.TransactionType.Deposit)
+                                        {
+                                            <span class="badge bg-success">
+                                                <i class="bi bi-arrow-down-circle"></i> Deposit
+                                            </span>
+                                        }
+                                        else if (transaction.Type == BankingSystem.Domain.Entities.Enums.TransactionType.Withdrawal)
+                                        {
+                                            <span class="badge bg-warning text-dark">
+                                                <i class="bi bi-arrow-up-circle"></i> Withdrawal
+                                            </span>
+                                        }
+                                        else if (transaction.Type == BankingSystem.Domain.Entities.Enums.TransactionType.Transfer || 
+                                                 transaction.Type == BankingSystem.Domain.Entities.Enums.TransactionType.TransferIn ||
+                                                 transaction.Type == BankingSystem.Domain.Entities.Enums.TransactionType.TransferOut)
+                                        {
+                                            <span class="badge bg-primary">
+                                                <i class="bi bi-arrow-left-right"></i> Transfer
+                                            </span>
+                                        }
+                                    </td>
+                                    <td>
+                                        <small>@transaction.AccountNumber</small>
+                                        @if (!string.IsNullOrEmpty(transaction.RelatedAccountNumber))
+                                        {
+                                            <br /><small class="text-muted">→ @transaction.RelatedAccountNumber</small>
+                                        }
+                                    </td>
+                                    <td>
+                                        @if (!string.IsNullOrEmpty(transaction.Description))
+                                        {
+                                            <span>@transaction.Description</span>
+                                        }
+                                        else
+                                        {
+                                            <span class="text-muted">No description</span>
+                                        }
+                                    </td>
+                                    <td class="text-end">
+                                        @if (transaction.Type == BankingSystem.Domain.Entities.Enums.TransactionType.Deposit ||
+                                             transaction.Type == BankingSystem.Domain.Entities.Enums.TransactionType.TransferIn)
+                                        {
+                                            <span class="text-success fw-bold">+@transaction.Amount.ToString("C")</span>
+                                        }
+                                        else if (transaction.Type == BankingSystem.Domain.Entities.Enums.TransactionType.Withdrawal ||
+                                                 transaction.Type == BankingSystem.Domain.Entities.Enums.TransactionType.TransferOut)
+                                        {
+                                            <span class="text-danger fw-bold">-@transaction.Amount.ToString("C")</span>
+                                        }
+                                        else
+                                        {
+                                            <span class="fw-bold">@transaction.Amount.ToString("C")</span>
+                                        }
+                                    </td>
+                                    <td class="text-end">
+                                        <span class="text-muted">@transaction.BalanceAfter.ToString("C")</span>
+                                    </td>
+                                    <td>
+                                        @if (transaction.Status == BankingSystem.Domain.Entities.Enums.TransactionStatus.Completed)
+                                        {
+                                            <span class="badge bg-success">Completed</span>
+                                        }
+                                        else if (transaction.Status == BankingSystem.Domain.Entities.Enums.TransactionStatus.Pending)
+                                        {
+                                            <span class="badge bg-warning text-dark">Pending</span>
+                                        }
+                                        else if (transaction.Status == BankingSystem.Domain.Entities.Enums.TransactionStatus.Failed)
+                                        {
+                                            <span class="badge bg-danger">Failed</span>
+                                        }
+                                        else if (transaction.Status == BankingSystem.Domain.Entities.Enums.TransactionStatus.Reversed)
+                                        {
+                                            <span class="badge bg-secondary">Reversed</span>
+                                        }
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <div class="mt-3 text-muted text-center">
+            <small>Showing @Model.Count() transaction(s)</small>
+        </div>
+    }
+    else
+    {
+        <div class="alert alert-info text-center" role="alert">
+            <h4 class="alert-heading"><i class="bi bi-inbox"></i> No Transactions Found</h4>
+            <p>You don't have any transactions yet. Start by making a deposit or transfer!</p>
+            <hr />
+            <div class="d-flex gap-2 justify-content-center">
+                <a asp-controller="Transaction" asp-action="Deposit" class="btn btn-success">
+                    <i class="bi bi-arrow-down-circle"></i> Make a Deposit
+                </a>
+                <a asp-controller="Transaction" asp-action="Transfer" class="btn btn-primary">
+                    <i class="bi bi-arrow-left-right"></i> Transfer Funds
+                </a>
+            </div>
+        </div>
+    }
+</div>

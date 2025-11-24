@@ -1,0 +1,74 @@
+﻿@{
+    ViewData["Title"] = "Home Page";
+}
+
+<div class="container mt-5">
+    <div class="text-center mb-5">
+        <h1 class="display-3 fw-bold text-primary">Welcome to Banking System</h1>
+        <p class="lead text-muted">Secure, Fast, and Reliable Banking Solutions</p>
+    </div>
+
+    <div class="row g-4 mb-5">
+        <div class="col-md-4">
+            <div class="card h-100 shadow-sm">
+                <div class="card-body text-center">
+                    <i class="bi bi-shield-check fs-1 text-success mb-3"></i>
+                    <h5 class="card-title">Secure Banking</h5>
+                    <p class="card-text">Your money is protected with state-of-the-art security measures and encryption.</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card h-100 shadow-sm">
+                <div class="card-body text-center">
+                    <i class="bi bi-lightning-charge fs-1 text-warning mb-3"></i>
+                    <h5 class="card-title">Fast Transactions</h5>
+                    <p class="card-text">Lightning-fast deposits, withdrawals, and transfers at your fingertips.</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card h-100 shadow-sm">
+                <div class="card-body text-center">
+                    <i class="bi bi-clock-history fs-1 text-info mb-3"></i>
+                    <h5 class="card-title">24/7 Access</h5>
+                    <p class="card-text">Manage your accounts anytime, anywhere with our always-on platform.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    @if (User.Identity?.IsAuthenticated == true)
+    {
+        <div class="row justify-content-center">
+            <div class="col-md-8 text-center">
+                <h3 class="mb-4">Welcome back, @User.Identity.Name!</h3>
+                <div class="d-grid gap-2 d-md-flex justify-content-md-center">
+                    <a asp-controller="Dashboard" asp-action="Index" class="btn btn-primary btn-lg px-4">
+                        <i class="bi bi-speedometer2"></i> Go to Dashboard
+                    </a>
+                    <a asp-controller="Account" asp-action="MyAccounts" class="btn btn-outline-primary btn-lg px-4">
+                        <i class="bi bi-wallet2"></i> My Accounts
+                    </a>
+                </div>
+            </div>
+        </div>
+    }
+    else
+    {
+        <div class="row justify-content-center">
+            <div class="col-md-8 text-center">
+                <h3 class="mb-4">Get Started Today</h3>
+                <p class="mb-4">Join thousands of satisfied customers who trust us with their financial needs.</p>
+                <div class="d-grid gap-2 d-md-flex justify-content-md-center">
+                    <a asp-controller="Account" asp-action="Register" class="btn btn-primary btn-lg px-4">
+                        <i class="bi bi-person-plus"></i> Create Account
+                    </a>
+                    <a asp-controller="Account" asp-action="Login" class="btn btn-outline-primary btn-lg px-4">
+                        <i class="bi bi-box-arrow-in-right"></i> Login
+                    </a>
+                </div>
+            </div>
+        </div>
+    }
+</div>
