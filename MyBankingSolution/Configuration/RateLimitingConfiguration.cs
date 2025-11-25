@@ -92,11 +92,10 @@ public static class RateLimitingConfiguration
                         PermitLimit = 10,
                         Window = TimeSpan.FromMinutes(1),
                         QueueProcessingOrder = QueueProcessingOrder.OldestFirst,
-                        QueueLimit = 0 // No queueing for strict policy
+                        QueueLimit = 0
                     });
             });
 
-            // Rejection behavior
             options.OnRejected = async (context, cancellationToken) =>
             {
                 context.HttpContext.Response.StatusCode = StatusCodes.Status429TooManyRequests;

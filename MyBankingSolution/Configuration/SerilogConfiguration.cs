@@ -24,7 +24,7 @@ public static class SerilogConfiguration
                 path: "Logs/banking-system-.log",
                 rollingInterval: RollingInterval.Day,
                 rollOnFileSizeLimit: true,
-                fileSizeLimitBytes: 10485760, // 10MB
+                fileSizeLimitBytes: 10485760,
                 retainedFileCountLimit: 30,
                 outputTemplate: "{Timestamp:yyyy-MM-dd HH:mm:ss.fff zzz} [{Level:u3}] [{RequestId}] [{UserName}@{IpAddress}] {HttpMethod} {RequestPath} {Message:lj} {Properties:j}{NewLine}{Exception}")
             .WriteTo.File(
@@ -53,20 +53,17 @@ public static class SerilogConfiguration
     {
         app.UseSerilogRequestLogging(options =>
         {
-            // Customize the message template
             options.MessageTemplate = "HTTP {RequestMethod} {RequestPath} responded {StatusCode} in {Elapsed:0.0000}ms";
 
-            // Emit debug-level events instead of information
             options.GetLevel = (httpContext, elapsed, ex) =>
             {
                 if (ex != null) return LogEventLevel.Error;
                 if (httpContext.Response.StatusCode >= 500) return LogEventLevel.Error;
                 if (httpContext.Response.StatusCode >= 400) return LogEventLevel.Warning;
-                if (elapsed > 1000) return LogEventLevel.Warning; // Slow requests
+                if (elapsed > 1000) return LogEventLevel.Warning;
                 return LogEventLevel.Information;
             };
 
-            // Enrich with additional properties
             options.EnrichDiagnosticContext = (diagnosticContext, httpContext) =>
             {
                 diagnosticContext.Set("UserName", httpContext.User?.Identity?.Name ?? "Anonymous");
@@ -78,7 +75,6 @@ public static class SerilogConfiguration
                 diagnosticContext.Set("ContentType", httpContext.Request.ContentType);
                 diagnosticContext.Set("ResponseContentType", httpContext.Response.ContentType);
                 
-                // Add request ID if available
                 if (httpContext.Items.TryGetValue("RequestId", out var requestId))
                 {
                     diagnosticContext.Set("RequestId", requestId);

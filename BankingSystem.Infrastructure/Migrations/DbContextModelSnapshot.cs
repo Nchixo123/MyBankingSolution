@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace BankingSystem.Infrastructure.Migrations
 {
-    [DbContext(typeof(BankingSystem.Infrastructure.Data.DbContext))]
+    [DbContext(typeof(BankDbContext))]
     partial class DbContextModelSnapshot : ModelSnapshot
     {
         protected override void BuildModel(ModelBuilder modelBuilder)

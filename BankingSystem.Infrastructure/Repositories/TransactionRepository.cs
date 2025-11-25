@@ -2,15 +2,12 @@ using BankingSystem.Domain.Entities;
 using BankingSystem.Domain.Entities.Enums;
 using BankingSystem.Domain.Interfaces;
 using Microsoft.EntityFrameworkCore;
+using BankingSystem.Infrastructure.Data;
 
 namespace BankingSystem.Infrastructure.Repositories;
 
-public class TransactionRepository : Repository<Transaction>, ITransactionRepository
+public class TransactionRepository(DbContext context) : Repository<Transaction>(context), ITransactionRepository
 {
-    public TransactionRepository(BankingSystem.Infrastructure.Data.DbContext context) : base(context)
-    {
-    }
-
     public async Task<Transaction?> GetByReferenceAsync(string transactionReference)
     {
         return await _dbSet.FirstOrDefaultAsync(t => t.TransactionReference == transactionReference);
@@ -26,7 +23,7 @@ public class TransactionRepository : Repository<Transaction>, ITransactionReposi
             .FirstOrDefaultAsync(a => a.AccountNumber == accountNumber);
 
         if (account == null)
-            return Enumerable.Empty<Transaction>();
+            return [];
 
         var query = _dbSet
             .AsNoTracking()

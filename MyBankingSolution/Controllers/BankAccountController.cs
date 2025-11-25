@@ -9,19 +9,13 @@ using MyBankingSolution.Extensions;
 namespace MyBankingSolution.Controllers;
 
 [Authorize]
-public class BankAccountController : BaseMvcController
+public class BankAccountController(
+    IAccountService accountService,
+    ITransactionService transactionService,
+    UserManager<ApplicationUser> userManager) : BaseMvcController(userManager)
 {
-    private readonly IAccountService _accountService;
-    private readonly ITransactionService _transactionService;
-
-    public BankAccountController(
-        IAccountService accountService,
-        ITransactionService transactionService,
-        UserManager<ApplicationUser> userManager) : base(userManager)
-    {
-        _accountService = accountService;
-        _transactionService = transactionService;
-    }
+    private readonly IAccountService _accountService = accountService;
+    private readonly ITransactionService _transactionService = transactionService;
 
     [HttpGet]
     [ResponseCache(Duration = 60, VaryByHeader = "User-Agent", Location = ResponseCacheLocation.Any)]

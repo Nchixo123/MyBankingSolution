@@ -16,8 +16,8 @@ public static class DatabaseSeeder
         try
         {
             Log.Information("Initializing database and seeding data");
-            
-            var context = serviceProvider.GetRequiredService<BankingSystem.Infrastructure.Data.DbContext>();
+
+            var context = serviceProvider.GetRequiredService<BankDbContext>();
             var userManager = serviceProvider.GetRequiredService<UserManager<ApplicationUser>>();
             var roleManager = serviceProvider.GetRequiredService<RoleManager<IdentityRole>>();
 

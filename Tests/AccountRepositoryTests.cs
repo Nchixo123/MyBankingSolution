@@ -8,17 +8,17 @@ namespace Tests;
 
 public class AccountRepositoryTests : IDisposable
 {
-    private readonly BankingSystem.Infrastructure.Data.DbContext _context;
+    private readonly BankingSystem.Infrastructure.Data.BankDbContext _context;
     private readonly AccountRepository _repository;
 
     public AccountRepositoryTests()
     {
         // Setup in-memory database
-        var options = new DbContextOptionsBuilder<BankingSystem.Infrastructure.Data.DbContext>()
+        var options = new DbContextOptionsBuilder<BankingSystem.Infrastructure.Data.BankDbContext>()
             .UseInMemoryDatabase(databaseName: Guid.NewGuid().ToString()) // Unique DB per test
             .Options;
 
-        _context = new BankingSystem.Infrastructure.Data.DbContext(options);
+        _context = new BankingSystem.Infrastructure.Data.BankDbContext(options);
         _repository = new AccountRepository(_context);
 
         // Seed test data

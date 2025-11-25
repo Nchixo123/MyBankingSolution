@@ -8,14 +8,14 @@ namespace BankingSystem.Infrastructure.Repositories;
 
 public class UnitOfWork : IUnitOfWork
 {
-    private readonly DbContext _context;
+    private readonly BankDbContext _context;
     private IDbContextTransaction? _transaction;
     private Dictionary<Type, object>? _repositories;
     private readonly Lazy<IAccountRepository> _accountRepository;
     private readonly Lazy<ITransactionRepository> _transactionRepository;
     private readonly Lazy<IAuditLogRepository> _auditLogRepository;
 
-    public UnitOfWork(DbContext context)
+    public UnitOfWork(BankDbContext context)
     {
         _context = context;
         

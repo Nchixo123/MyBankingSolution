@@ -11,7 +11,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace BankingSystem.Infrastructure.Migrations
 {
-    [DbContext(typeof(BankingSystem.Infrastructure.Data.DbContext))]
+    [DbContext(typeof(BankDbContext))]
     [Migration("20251124222645_AddConcurrencyAndIndexes")]
     partial class AddConcurrencyAndIndexes
     {

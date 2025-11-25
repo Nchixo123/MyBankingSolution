@@ -13,10 +13,9 @@ public static class CorsConfiguration
                        .AllowAnyHeader();
             });
 
-            // Production-ready CORS policy (more restrictive)
             options.AddPolicy("Production", builder =>
             {
-                builder.WithOrigins("https://yourdomain.com", "https://www.yourdomain.com")
+                builder.WithOrigins("https://mycustomDomainIwillNeverUse.com", "https://www.mycustomDomainIwillNeverUse.com")
                        .AllowAnyMethod()
                        .AllowAnyHeader()
                        .AllowCredentials();

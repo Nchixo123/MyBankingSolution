@@ -1,4 +1,5 @@
 using BankingSystem.Domain.Entities;
+using BankingSystem.Infrastructure.Data;
 using Microsoft.AspNetCore.Identity;
 
 namespace MyBankingSolution.Configuration;
@@ -22,7 +23,7 @@ public static class IdentityConfiguration
             options.User.RequireUniqueEmail = true;
             options.SignIn.RequireConfirmedEmail = false;
         })
-        .AddEntityFrameworkStores<BankingSystem.Infrastructure.Data.DbContext>()
+        .AddEntityFrameworkStores<BankDbContext>()
         .AddDefaultTokenProviders();
 
         services.ConfigureApplicationCookie(options =>

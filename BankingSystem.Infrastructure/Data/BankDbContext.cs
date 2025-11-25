@@ -5,7 +5,7 @@ using Transaction = BankingSystem.Domain.Entities.Transaction;
 
 namespace BankingSystem.Infrastructure.Data;
 
-public class DbContext(DbContextOptions<DbContext> options) : IdentityDbContext<ApplicationUser>(options)
+public class BankDbContext(DbContextOptions<BankDbContext> options) : IdentityDbContext<ApplicationUser>(options)
 {
     public DbSet<Account> Accounts { get; set; }
     public DbSet<Transaction> Transactions { get; set; }

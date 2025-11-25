@@ -30,7 +30,7 @@ public class TransactionController(
             return RedirectToAction("Login", "Account");
 
         var accounts = await _accountService.GetUserAccountsAsync(userId);
-        
+
         if (!accounts.Any())
         {
             this.AddWarningToast("You need to create an account first before making a deposit.");
@@ -84,7 +84,7 @@ public class TransactionController(
             return RedirectToAction("Login", "Account");
 
         var accounts = await _accountService.GetUserAccountsAsync(userId);
-        
+
         if (!accounts.Any())
         {
             this.AddWarningToast("You need to create an account first before making a withdrawal.");
@@ -138,7 +138,7 @@ public class TransactionController(
             return RedirectToAction("Login", "Account");
 
         var accounts = await _accountService.GetUserAccountsAsync(userId);
-        
+
         if (!accounts.Any())
         {
             this.AddWarningToast("You need to create an account first before making a transfer.");

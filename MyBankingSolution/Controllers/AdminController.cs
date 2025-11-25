@@ -9,24 +9,16 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 namespace MyBankingSolution.Controllers;
 
 [Authorize(Roles = "Admin")]
-public class AdminController : Controller
+public class AdminController(
+    IAuthService authService,
+    IAccountService accountService,
+    ITransactionService transactionService,
+    UserManager<ApplicationUser> userManager) : Controller
 {
-    private readonly IAuthService _authService;
-    private readonly IAccountService _accountService;
-    private readonly ITransactionService _transactionService;
-    private readonly UserManager<ApplicationUser> _userManager;
-
-    public AdminController(
-        IAuthService authService,
-        IAccountService accountService,
-        ITransactionService transactionService,
-        UserManager<ApplicationUser> userManager)
-    {
-        _authService = authService;
-        _accountService = accountService;
-        _transactionService = transactionService;
-        _userManager = userManager;
-    }
+    private readonly IAuthService _authService = authService;
+    private readonly IAccountService _accountService = accountService;
+    private readonly ITransactionService _transactionService = transactionService;
+    private readonly UserManager<ApplicationUser> _userManager = userManager;
 
     [HttpGet]
     public async Task<IActionResult> Index()

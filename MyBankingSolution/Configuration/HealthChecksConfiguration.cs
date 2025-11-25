@@ -1,7 +1,6 @@
-using BankingSystem.Infrastructure.Data;
 using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 using Microsoft.Extensions.Diagnostics.HealthChecks;
-using DbContext = BankingSystem.Infrastructure.Data.DbContext;
+using BankingSystem.Infrastructure.Data;
 
 namespace MyBankingSolution.Configuration;
 
@@ -14,7 +13,7 @@ public static class HealthChecksConfiguration
         var healthChecksBuilder = services.AddHealthChecks();
 
         // 1. Database Health Check
-        healthChecksBuilder.AddDbContextCheck<DbContext>(
+        healthChecksBuilder.AddDbContextCheck<BankDbContext>(
             name: "database",
             failureStatus: HealthStatus.Unhealthy,
             tags: new[] { "db", "sql", "ready" });

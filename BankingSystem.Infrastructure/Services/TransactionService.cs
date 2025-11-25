@@ -425,6 +425,6 @@ public class TransactionService(
 
     private static string GenerateTransactionReference()
     {
-        return $"TXN{DateTime.UtcNow:yyyyMMddHHmmss}{Guid.NewGuid().ToString("N")[..4].ToUpper()}";
+        return $"TBILISI{DateTime.UtcNow:yyyyMMddHHmmss}{Guid.NewGuid().ToString("N")[..4].ToUpper()}";
     }
 }

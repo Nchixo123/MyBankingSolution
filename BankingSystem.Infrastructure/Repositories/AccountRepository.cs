@@ -1,16 +1,13 @@
 using BankingSystem.Domain.Entities;
 using BankingSystem.Domain.Entities.Enums;
 using BankingSystem.Domain.Interfaces;
+using BankingSystem.Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
 
 namespace BankingSystem.Infrastructure.Repositories;
 
-public class AccountRepository : Repository<Account>, IAccountRepository
+public class AccountRepository(BankDbContext context) : Repository<Account>(context), IAccountRepository
 {
-    public AccountRepository(BankingSystem.Infrastructure.Data.DbContext context) : base(context)
-    {
-    }
-
     public async Task<Account?> GetByAccountNumberAsync(string accountNumber)
     {
         return await _dbSet.FirstOrDefaultAsync(a => a.AccountNumber == accountNumber);
